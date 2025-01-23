@@ -22,13 +22,6 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
 
-      - name: Set up Docker Compose
-        run: |
-          echo "Setting up Docker Compose"
-          docker-compose -f docker-compose.yml up -d
-          echo "Waiting for WireMock to start"
-          sleep 10
-
       - name: Start Spring Boot application
         run: |
           echo "Starting the Spring Boot application"
@@ -37,6 +30,13 @@ jobs:
           echo "Waiting for the Spring Boot application to start"
           sleep 30
           echo "Spring Boot application started successfully"
+
+      - name: Set up Docker Compose
+        run: |
+          echo "Setting up Docker Compose"
+          docker-compose -f docker-compose.yml up -d
+          echo "Waiting for WireMock to start"
+          sleep 10
 
   test-job:
     name: Run Tests
