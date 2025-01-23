@@ -46,16 +46,26 @@ jobs:
           distribution: 'temurin'
 
       - name: List directory contents for debugging
-        run: ls -la
+        run: |
+          echo "Listing directory contents for debugging"
+          ls -la
 
       - name: Navigate to Maven project root directory
-        run: cd BackEndFilmes/brunao || exit 1
+        run: |
+          echo "Navigating to Maven project root directory"
+          cd BackEndFilmes/brunao
 
       - name: Install project dependencies
-        run: mvn clean install -DskipTests
+        run: |
+          echo "Installing project dependencies"
+          cd BackEndFilmes/brunao
+          mvn clean install -DskipTests
 
       - name: Run tests
-        run: mvn test -Denv=homolog
+        run: |
+          echo "Running tests"
+          cd BackEndFilmes/brunao
+          mvn test -Denv=homolog
 
       - name: Upload test artifacts
         uses: actions/upload-artifact@v3
