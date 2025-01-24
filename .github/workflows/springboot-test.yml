@@ -33,12 +33,12 @@ jobs:
           echo "Listing directory contents for debugging"
           ls -la
           echo "Checking for docker-compose.yml"
-          ls -la ./path/to/docker-compose.yml # Update this path if needed
+          ls -la ./BackEndFilmes # Update this path if needed
 
       - name: Set up Docker Compose
         run: |
           echo "Setting up Docker Compose"
-          docker-compose -f ./path/to/docker-compose.yml up -d # Update the path if needed
+          docker-compose -f ./BackEndFilmes/docker-compose.yml up -d # Update the path if needed
           echo "Waiting for WireMock to start"
           sleep 10
 
