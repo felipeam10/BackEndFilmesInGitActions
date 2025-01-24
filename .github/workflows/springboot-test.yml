@@ -38,9 +38,16 @@ jobs:
       - name: Set up Docker Compose
         run: |
           echo "Setting up Docker Compose"
-          docker-compose -f ./BackEndFilmes/brunao/docker-compose.yml up -d # Update the path if needed
+          docker-compose -f ./BackEndFilmes/brunao/docker-compose.yml up -d
           echo "Waiting for WireMock to start"
-          sleep 20
+          for i in {1..30}; do
+            if curl --fail http://localhost:8091/__admin/mappings; then
+              echo "WireMock is up and running"
+              break
+            fi
+            echo "Waiting for WireMock..."
+            sleep 5
+          done
 
       - name: Start Spring Boot application
         run: |
@@ -48,8 +55,14 @@ jobs:
           cd BackEndFilmes/brunao
           mvn spring-boot:start &
           echo "Waiting for the Spring Boot application to start"
-          sleep 30
-          echo "Spring Boot application started successfully"
+          for i in {1..30}; do
+            if curl --fail http://localhost:8080/actuator/health; then
+              echo "Spring Boot application is up and running"
+              break
+            fi
+            echo "Waiting for Spring Boot application..."
+            sleep 5
+          done
 
   test-job:
     name: Run Tests
