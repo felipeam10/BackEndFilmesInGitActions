@@ -95,10 +95,10 @@ jobs:
           cd BackEndFilmes/brunao
           mvn test -Denv=homolog
 
-      - name: Upload test artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: test-reports
-          path: |
-            BackEndFilmes/brunao/target/report.html
-            BackEndFilmes/brunao/target/report.json
+#      - name: Upload test artifacts
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: test-reports
+#          path: |
+#            BackEndFilmes/brunao/target/report.html
+#            BackEndFilmes/brunao/target/report.json
