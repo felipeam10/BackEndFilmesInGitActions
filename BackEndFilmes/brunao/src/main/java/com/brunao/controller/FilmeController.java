@@ -1,16 +1,13 @@
-package com.brunao.brunao.controller;
+package com.brunao.controller;
 
-import com.brunao.brunao.model.Filme;
-import com.brunao.brunao.repository.FilmeRepository;
-import com.brunao.brunao.response.ResponseHandler;
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.brunao.model.Filme;
+import com.brunao.repository.FilmeRepository;
+import com.brunao.response.ResponseHandler;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;

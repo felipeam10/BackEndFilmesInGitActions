@@ -1,4 +1,4 @@
-package com.brunao.brunao.service;
+package com.brunao.service;
 
 public class FilmeService {
 

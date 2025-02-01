@@ -173,7 +173,7 @@ criar a pasta repository e o criar uma interface para FilmeRepository
 ```
 package com.brunao.brunao.repository;
 
-import com.brunao.brunao.model.Filme;
+import model.com.brunao.Filme;
 import org.springframework.data.repository.CrudRepository;
 
 public interface FilmeRepository extends CrudRepository<Filme, Integer> {
@@ -188,7 +188,7 @@ Agora vamos criar uma requisicao pra buscar um filme por id
 ```
 package com.brunao.brunao.controller;
 
-import com.brunao.brunao.repository.FilmeRepository;
+import repository.com.brunao.FilmeRepository;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;

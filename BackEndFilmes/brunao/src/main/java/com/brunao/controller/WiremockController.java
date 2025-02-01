@@ -1,4 +1,4 @@
-package com.brunao.brunao.controller;
+package com.brunao.controller;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;

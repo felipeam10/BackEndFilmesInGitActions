@@ -1,4 +1,4 @@
-package com.brunao.brunao.response;
+package com.brunao.response;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
