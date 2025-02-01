@@ -33,7 +33,7 @@ jobs:
           echo "Listing directory contents for debugging"
           ls -la
           echo "Checking for docker-compose.yml"
-          ls -la ./BackEndFilmes # Update this path if needed
+          ls -la ./BackEndFilmes/brunao
 
       - name: Set up Docker Compose
         run: |
