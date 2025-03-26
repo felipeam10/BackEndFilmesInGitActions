@@ -41,7 +41,7 @@ jobs:
           docker-compose -f ./BackEndFilmes/brunao/docker-compose.yml up -d
           echo "Waiting for WireMock to start"
           for i in {1..30}; do
-            if curl --fail http://localhost:8091/__admin/mappings; then
+            if curl --fail http://127.0.0.1:8091/__admin/mappings; then
               echo "WireMock is up and running"
               break
             fi
@@ -56,7 +56,7 @@ jobs:
           mvn spring-boot:start &
           echo "Waiting for the Spring Boot application to start"
           for i in {1..60}; do  # Increased retries
-            if curl --fail http://localhost:8081/actuator/health; then
+            if curl --fail http://127.0.0.1:8081/actuator/health; then
               echo "Spring Boot application is up and running"
               break
             fi
