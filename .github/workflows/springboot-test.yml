@@ -22,22 +22,14 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
 
-      - name: Set up Docker Compose
-        run: docker-compose --version
-
-      - name: Start Wiremock with Docker Compose
-        run: docker-compose up -d wiremock
-
-      - name: Wait for Wiremock to start
+      - name: Start Wiremock (docker run)
         run: |
-          for i in {1..30}; do
-            if curl --fail http://127.0.0.1:8091/__admin/mappings; then
-              echo "Wiremock is up and running"
-              break
-            fi
-            echo "Waiting for Wiremock..."
-            sleep 2
-          done
+          docker run -d \
+            -p 8091:8080 \
+            -v ${{ github.workspace }}/local/wiremock/mappings:/home/wiremock/mappings \
+            -v ${{ github.workspace }}/local/wiremock/__files:/home/wiremock/__files \
+            -e WIREMOCK_OPTIONS="--local-response-templating, --root-dir=/home/wiremock" \
+            --name wiremock wiremock/wiremock:2.35.0
 
       - name: Start Spring Boot application
         run: |
