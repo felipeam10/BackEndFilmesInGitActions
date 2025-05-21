@@ -22,24 +22,17 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
 
-      - name: Install Docker Compose
+      - name: Download WireMock Standalone
         run: |
-          echo "Installing Docker Compose"
-          sudo apt-get update
-          sudo apt-get install -y docker-compose
+          wget https://repo1.maven.org/maven2/com/github/tomakehurst/wiremock-standalone/3.5.4/wiremock-standalone-3.5.4.jar -O wiremock.jar
 
-      - name: Debug - List directory contents
+      - name: Start WireMock
         run: |
-          echo "Listing directory contents for debugging"
-          ls -la
-          echo "Checking for docker-compose.yml"
-          ls -la ./BackEndFilmes/brunao
+          nohup java -jar wiremock.jar --port 8091 > wiremock.log 2>&1 &
+          sleep 5
 
-      - name: Set up Docker Compose
+      - name: Wait for WireMock to start
         run: |
-          echo "Setting up Docker Compose"
-          docker-compose -f ./BackEndFilmes/brunao/docker-compose.yml up -d
-          echo "Waiting for WireMock to start"
           for i in {1..30}; do
             if curl --fail http://127.0.0.1:8091/__admin/mappings; then
               echo "WireMock is up and running"
