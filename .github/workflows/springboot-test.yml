@@ -22,24 +22,21 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
 
-      - name: Download WireMock Standalone
-        run: |
-          wget https://repo1.maven.org/maven2/com/github/tomakehurst/wiremock-standalone/2.35.0/wiremock-standalone-2.35.0.jar -O wiremock.jar
+      - name: Set up Docker Compose
+        run: docker-compose --version
 
-      - name: Start WireMock
-        run: |
-          nohup java -jar wiremock.jar --port 8091 > wiremock.log 2>&1 &
-          sleep 5
+      - name: Start Wiremock with Docker Compose
+        run: docker-compose up -d wiremock
 
-      - name: Wait for WireMock to start
+      - name: Wait for Wiremock to start
         run: |
           for i in {1..30}; do
             if curl --fail http://127.0.0.1:8091/__admin/mappings; then
-              echo "WireMock is up and running"
+              echo "Wiremock is up and running"
               break
             fi
-            echo "Waiting for WireMock..."
-            sleep 5
+            echo "Waiting for Wiremock..."
+            sleep 2
           done
 
       - name: Start Spring Boot application
