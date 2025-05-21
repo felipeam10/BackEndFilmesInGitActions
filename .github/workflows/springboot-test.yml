@@ -38,7 +38,7 @@ jobs:
           mvn spring-boot:start &
           echo "Waiting for the Spring Boot application to start"
           for i in {1..60}; do  # Increased retries
-            if curl --fail http://127.0.0.1:8081/actuator/health; then
+            if curl --fail localhost:8081/actuator/health; then
               echo "Spring Boot application is up and running"
               break
             fi
