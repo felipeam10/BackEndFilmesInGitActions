@@ -50,7 +50,7 @@ jobs:
 #            fi
 #            echo "Waiting for Spring Boot application..."
 #            sleep 10  # Increased wait time
-          done
+#          done
 
   test-job:
     name: Run Tests
