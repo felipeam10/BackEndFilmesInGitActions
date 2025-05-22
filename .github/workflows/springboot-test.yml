@@ -31,6 +31,11 @@ jobs:
             -e WIREMOCK_OPTIONS="--local-response-templating, --root-dir=/home/wiremock" \
             --name wiremock wiremock/wiremock:2.35.0
 
+      - name: Build Spring Boot application
+        run: |
+          cd BackEndFilmes/brunao
+          mvn clean install -DskipTests
+
       - name: Start Spring Boot application
         run: |
           echo "Starting the Spring Boot application"
