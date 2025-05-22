@@ -36,18 +36,21 @@ jobs:
           cd BackEndFilmes/brunao
           mvn clean install -DskipTests
 
-      - name: Start Spring Boot application in background
+      - name: Start Spring Boot application
         run: |
+          echo "Starting the Spring Boot application"
           cd BackEndFilmes/brunao
-          nohup mvn spring-boot:run > app.log 2>&1 &
-          for i in {1..60}; do
-            if curl --fail http://localhost:8081/actuator/health; then
-              echo "Spring Boot application is up and running"
-              break
-            fi
-            echo "Waiting for Spring Boot application..."
-            sleep 2
-          done
+          mvn spring-boot:start
+#          &
+#          echo "Waiting for the Spring Boot application to start"
+#          for i in {1..60}; do  # Increased retries
+#            if curl --fail localhost:8081/actuator/health; then
+#              echo "Spring Boot application is up and running"
+#              break
+#            fi
+#            echo "Waiting for Spring Boot application..."
+#            sleep 10  # Increased wait time
+#          done
 
       - name: Run tests
         run: |
