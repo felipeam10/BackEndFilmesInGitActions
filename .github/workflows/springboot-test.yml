@@ -9,16 +9,6 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-    services:
-      wiremock:
-        image: wiremock/wiremock:2.35.0
-        ports:
-          - 8091:8080
-        options: >-
-          --name wiremock
-          -v ${{ github.workspace }}/BackEndFilmes/brunao/local/wiremock/mappings:/home/wiremock/mappings
-          -v ${{ github.workspace }}/BackEndFilmes/brunao/local/wiremock/__files:/home/wiremock/__files
-          -e WIREMOCK_OPTIONS="--local-response-templating, --root-dir=/home/wiremock"
 
     steps:
       - name: Checkout code
@@ -29,6 +19,17 @@ jobs:
         with:
           java-version: '11'
           distribution: 'temurin'
+
+      - name: Start Wiremock
+        run: |
+          docker run -d \
+            --name wiremock \
+            -p 8091:8080 \
+            -v ${{ github.workspace }}/BackEndFilmes/brunao/local/wiremock/mappings:/home/wiremock/mappings \
+            -v ${{ github.workspace }}/BackEndFilmes/brunao/local/wiremock/__files:/home/wiremock/__files \
+            -e WIREMOCK_OPTIONS="--local-response-templating, --root-dir=/home/wiremock" \
+            --user $(id -u):$(id -g) \
+            wiremock/wiremock:2.35.0
 
       - name: Build Spring Boot application
         run: |
