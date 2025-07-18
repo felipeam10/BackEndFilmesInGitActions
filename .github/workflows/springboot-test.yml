@@ -2,30 +2,62 @@ name: Spring Boot CI/CD
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
-    branches:
-      - main
+    branches: [main]
 
 jobs:
-  build-test:
+  build-and-test:
     runs-on: ubuntu-latest
+    services:
+      wiremock:
+        image: wiremock/wiremock:2.35.0
+        ports:
+          - 8091:8080
+        options: >-
+          --name wiremock
+          -v ${{ github.workspace }}/BackEndFilmes/brunao/local/wiremock/mappings:/home/wiremock/mappings
+          -v ${{ github.workspace }}/BackEndFilmes/brunao/local/wiremock/__files:/home/wiremock/__files
+          -e WIREMOCK_OPTIONS="--local-response-templating, --root-dir=/home/wiremock"
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v4
         with:
           java-version: '11'
           distribution: 'temurin'
-      - run: cd BackEndFilmes/brunao && mvn clean install -DskipTests
-      - run: |
+
+      - name: Build Spring Boot application
+        run: |
+          cd BackEndFilmes/brunao
+          mvn clean install -DskipTests
+
+      - name: Start Spring Boot application
+        run: |
           cd BackEndFilmes/brunao
           nohup mvn spring-boot:run > app.log 2>&1 &
-          for i in {1..60}; do
-            if curl --fail http://localhost:8081/actuator/health; then
-              echo "Spring Boot application is up and running"
+          for i in {1..30}; do
+            if curl -s http://localhost:8080/actuator/health | grep UP; then
+              echo "Spring Boot is up!"
               break
             fi
-            sleep 2
+            echo "Waiting for Spring Boot..."
+            sleep 5
           done
-      - run: cd BackEndFilmes/brunao && mvn test -Denv=homolog
+
+      - name: Run tests
+        run: |
+          cd BackEndFilmes/brunao
+          mvn test
+
+      - name: Upload test reports
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-reports
+          path: |
+            BackEndFilmes/brunao/target/surefire-reports/
+            BackEndFilmes/brunao/target/cucumber/report.html
+            BackEndFilmes/brunao/target/cucumber/report.json
