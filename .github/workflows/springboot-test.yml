@@ -41,13 +41,19 @@ jobs:
           cd BackEndFilmes/brunao
           nohup mvn spring-boot:run > app.log 2>&1 &
           for i in {1..30}; do
-            if curl -s http://localhost:8081/actuator/health | grep UP; then
+            if curl -s http://localhost:8080/actuator/health | grep UP; then
               echo "Spring Boot is up!"
               break
             fi
             echo "Waiting for Spring Boot..."
             sleep 5
           done
+
+      - name: Print Spring Boot logs on failure
+        if: failure()
+        run: |
+          cd BackEndFilmes/brunao
+          tail -n 50 app.log
 
       - name: Run tests
         run: |
