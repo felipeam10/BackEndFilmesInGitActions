@@ -38,7 +38,7 @@ jobs:
 
       - name: Start Spring Boot application
         run: |
-          cd BackEndFilmes/brunao
+          cd BackEndFilmes/brunao/src/main/java/com/brunao
           nohup mvn spring-boot:run > app.log 2>&1 &
           for i in {1..30}; do
             if curl -s http://127.0.0.1:8080/actuator/health | grep UP; then
